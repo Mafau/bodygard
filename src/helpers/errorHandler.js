@@ -1,4 +1,10 @@
+import { BodyGardError } from '../errors'
+
 export default function errorHandler(err, req, res, next) {
+  if (err instanceof BodyGardError) {
+    return res.status(err.status).json({ message: err.message })
+  }
+
   if (typeof err === 'string') {
     // custom application error
     return res.status(400).json({ message: err })
